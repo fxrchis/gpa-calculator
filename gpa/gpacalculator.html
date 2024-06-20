@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="stylesGPA.css">
+    <title>GPA Calculator</title>
+</head>
+<body>
+    <header>
+        <a href="#" class="logo">WHARTON</a>
+        <nav>
+            <a href="#home" class="active">Home</a>
+            <a href="#calculator">Calculator</a>
+            <a href="#analysis">Analysis</a>
+            <a href="#help">Help</a>
+        </nav>
+    </header>
+
+    <section id="home">
+        <div class="wrapper">
+            <h1></h1>
+        </div>
+        <div class="container">
+            <div class="welcome-box">
+                <h2>Welcome!</h2>
+            </div>
+            <div class="logo-decoration">
+                <div class="image"></div>
+                <p >Wharton High School</p>
+            </div>
+            <div class="instructions">
+                <h2 id="home-label">Need Help?</h2>
+                <p id="school-label">Here's all you need to know about the GPA Calculator!</p>
+                <div class="collapsible-item">
+                    <div class="collapsible">
+                        <input type="checkbox" id="collapsible-head">
+                        <label for="collapsible-head">Instructions to calculate your GPA</label>
+                        <div class="collapsible-text">
+                            <h2>How to calculate your GPA</h2>
+                            <p>Scroll to the Calculator page or click the "Calculator" title on the header.</p>
+                            <p>Once doing so, input the year you enrolled into highschool, the class type you have for each period, and the current grade.</p>
+                            <p>Click "Add Class", and your inputted information will be displayed on a grid.</p>
+                            <p>Keep adding all the classes that you currently have until you are done.</p>
+                            <p>When finished adding all classes, click the "Calculate GPA" button, and your unweighted and weighted GPA will be displayed.</p>
+                            <p>If you want to clear the classes you currently have, next to the "Calculate GPA" button, clicking the "Clear" button will reset all inputted data including year of enrollment, grades, and classes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="socials">
+                <h2>Connect With Wharton</h2>
+                <div class="icon-fields">
+                    <div class="icon-link">
+                        <a href="https://www.instagram.com/wharton.highschool/" target="_blank">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <p>Instagram</p>
+                    </div>
+                    <div class="icon-link">
+                        <a href="https://www.hillsboroughschools.org/wharton" target="_blank">
+                            <i class="fa-solid fa-school"></i>
+                        </a>
+                        <p>School Website</p>
+                    </div>
+                    <div class="icon-link">
+                        <a href="https://www.youtube.com/@whartonhighschool239" target="_blank">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <p>Youtube</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="calculator">
+        <div class="wrapper">
+            <h1>Calculator</h1>
+            <p>Calculate your GPA under the Calculator page.</p>
+        </div>
+        <div class="container">
+            <div class="btn-container">
+                <input class="enroll" type="text" placeholder="Year of Enrollment">
+                <div class="select-con" id = "classes">
+                    <select class="class-type">
+                        <option value="">Class Type</option>
+                        <option value="1">AP</option>
+                        <option value="1">Dual Enrollment</option>
+                        <option value="1">AICE</option>
+                        <option value="0.5">Honors</option>
+                        <option value="0">NOTA</option>
+                    </select>
+                </div>
+                <div class="select-con" id="grades">
+                    <select class="grade">
+                        <option value="">Grade</option>
+                        <option value="4">A</option>
+                        <option value="3">B</option>
+                        <option value="2">C</option>
+                        <option value="1">D</option>
+                        <option value="0">F</option>
+                    </select>
+                </div>
+                
+                <button class="new-class-btn">Add Class</button>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table id="class-table">
+                <thead>
+                    <tr>
+                        <th>Year of Enrollment</th>
+                        <th>Class Type</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <div class="calc-container">
+            <div class="btn-container">
+                <button class="calculate">Calculate GPA</button>
+                <button class="clear">Clear</button>
+            </div>
+        </div>
+        <div class="results">
+            <div class="con">
+                <h3 id="title">Summary</h3>
+                <div class="gpa-box">
+                    <p id="unweighted"></p>
+                    <p id="weighted"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="analysis">
+        <div class="wrapper">
+            <h1>Analysis</h1>
+            <p>Look over your reports, create goals, and calculate predictions of your class grade.</p>
+        </div>
+        <div class="container">
+            <div class="top-container">
+                <div class="left-screen">
+                    <h2>What-If Calculator</h2>
+                    <div class="inputs">
+                        <div class="label">
+                            <h3>Enter Current Class Grade</h3>
+                        </div>
+                        <div class="input-box">
+                            <input type="text" placeholder="Grade (Percent)" required>
+                        </div>
+                        <div class="label">
+                            <h3>Enter What-If Class Grade</h3>
+                        </div>
+                        <div class="input-box">
+                            <input type="text" placeholder="Grade (Percent)" required>
+                        </div>
+                        <div class="btn-field">
+                            <button id="result-btn">Calculate</button>
+                            <button id="reset-btn">Clear</button>
+                        </div>
+                        <div class="results">
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-screen">
+                    <h2>Goal Setter</h2>
+                    <form id="goal-form">
+                        <label for="goal">Enter Goals</label>
+                        <input type="text" id="goal" name="goal" placeholder="Goal" required>
+                        <button type="submit">Set Goal</button>
+                        <div id="goal-display">
+                            <!-- Goals will be displayed here -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="bottom-container">
+                <h2>Report Bar</h2>
+                <div class="report-container">
+                    <div class="label">
+                        <h3>Report</h3>
+                    </div>
+                    <div class="results">
+                        <p id="gpaReport">No information to display currently.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<section id="help">
+    <div class="wrapper">
+        <h1>Help</h1>
+        <p>Read questions which may answer your problems.</p>
+    </div>
+    <div class="container">
+        <div class="collapsible-con">
+            <h3 id="help-label">Frequently Asked Questions</h3>
+            <div class="collapsible-item">
+                <div class="collapsible">
+                    <input type="checkbox" id="collapsible-head-help1">
+                    <label for="collapsible-head-help1">Calculating GPA</label>
+                    <div class="collapsible-text">
+                        <h2>How do I calculate my GPA?</h2>
+                        <p>On the calculator page, by simply entering your enrollment date and entering the class types including the grade of the class, you can input your information to a table showing the information by pressing "Add Class". By clicking the "Calculate" button, both your weighted and unweighted GPA will appear.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="collapsible-item">
+                <div class="collapsible">
+                    <input type="checkbox" id="collapsible-head-help2">
+                    <label for="collapsible-head-help2">Academic Goals</label>
+                    <div class="collapsible-text">
+                        <h2>Can I set specific academic goals in the goal tracker, and if so, how?</h2>
+                        <p>Of course! You can set any type of goal that you want in the goal tracker. In order to create a goal, head to the Analysis page and input any goal you'd like! Once doing so, clicking the "Set Goal" button will show your goals.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="collapsible-item">
+                <div class="collapsible">
+                    <input type="checkbox" id="collapsible-head-help3">
+                    <label for="collapsible-head-help3">"What-If" Calculator</label>
+                    <div class="collapsible-text">
+                        <h2>How does the "what if" calculator work, and what scenarios can I explore with it?</h2>
+                        <p>The calculator makes a prediction of how many units your GPA will increase or decrease. Based off if your class grade decreases or increases to the what if grade, the only two scenarios are showing if your GPA will increase and decrease.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="collapsible-item">
+                <div class="collapsible">
+                    <input type="checkbox" id="collapsible-head-help4">
+                    <label for="collapsible-head-help4">Customizing the GPA calculator</label>
+                    <div class="collapsible-text">
+                        <h2>Can I customize the GPA calculator to factor in different grading systems or weighted courses?</h2>
+                        <p>Unfortunately no, we have already set the factors to take into account the grading system. Based off the year you have enrolled into highschool and the class types you take, the added weighted GPA points will vary by 0.5 and 1.0, or 0.4 and 0.8.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="collapsible-item">
+                <div class="collapsible">
+                    <input type="checkbox" id="collapsible-head-help5">
+                    <label for="collapsible-head-help5">Grade Report</label>
+                    <div class="collapsible-text">
+                        <h2>How can I use the data provided in the academic performance report?</h2>
+                        <p>Our goal is to let you interpret on what you want to complete for the future with the data given. Your GPA and our report show the recommendations on how to handle with the situation your in, using your data, it is best to reflect and understand what YOU can do to achieve your goals!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="social-links">
+            <div class="header">
+                <h3 id="title">Wharton's Website Links</h3>
+            </div>
+            <div class="icon-con">
+                <div class="icon">
+                    <a href="https://www.instagram.com/wharton.highschool/" target="_blank">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                </div>
+                <div class="icon">
+                    <a href="https://www.hillsboroughschools.org/wharton" target="_blank">
+                        <i class="fa-solid fa-school"></i>
+                    </a>
+                </div>
+                <div class="icon">
+                    <a href="https://www.youtube.com/@whartonhighschool239" target="_blank">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    
+
+    <script src="scriptGPA.js" type="module"></script>
+    <script src="scriptGoal.js" type="module"></script>
+    <script src="userQueries.js" type="module"></script>
+    <script src="createDatabase.js" type="module"></script>
+    <script src="scriptWhatIf.js"></script>
+    <script src="extraFeatures.js"></script>
+    
+</body>
+</html>

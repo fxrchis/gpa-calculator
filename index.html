@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesLogin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <title>Wharton Login</title>
+</head>
+<body>
+    <div class="container">
+        <div class="form-box">
+            <h1 id="title">Sign In</h1>
+            <form id="loginForm">
+                <div class="input-boxes">
+                    <div class="input-field">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="text" id="studentIDInput" name="studentID" placeholder="Student ID" required>
+                    </div>
+                </div>
+                <div class="btn-field">
+                    <input type="submit" value="Sign In">
+                </div>
+                <p id="signupLink">Don't have an account? <a href="#">Sign Up</a></p>
+            </form>
+            <form id="signupForm" style="display: none;">
+                <div class="input-boxes">
+                    <div class="input-field">
+                        <i class="fa-regular fa-user"></i>
+                        <input type="text" id="firstNameInput" name="firstName" placeholder="First Name" required>
+                    </div>
+                    <div class="input-field">
+                        <i class="fa-regular fa-user"></i>
+                        <input type="text" id="lastNameInput" name="lastName" placeholder="Last Name" required>
+                    </div>
+                    <div class="input-field">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="text" id="newstudentIDInput" name="newStudentID" placeholder="Student ID" required>
+                    </div>
+                </div>
+                <div class="btn-field">
+                    <input type="submit" value="Sign Up">
+                </div>
+                <p id="loginLink">Already signed up? <a href="#">Sign In</a></p>
+            </form>
+        </div>
+    </div>
+    <script src="scriptLogin.js" type="module"></script>
+    <script src="createDatabase.js" type="module"></script>
+</body>
+</html>
