@@ -87,8 +87,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const getWeightedPoints = (grade, type) => {
             const points = gradeToPoints[grade];
             if (enrollmentYear <= 2022) {
-                if (type === "AP" || type === "AICE" || type === "Dual Enrollment") return points + 0.8;
-                if (type === "Honors") return points + 0.4;
+                if (type === "AP" || type === "AICE" || type === "Dual Enrollment") return points + 0.08;
+                if (type === "Honors") return points + 0.04;
             } else {
                 if (type === "AP" || type === "AICE" || type === "Dual Enrollment") return points + 1.0;
                 if (type === "Honors") return points + 0.5;
