@@ -1,10 +1,15 @@
+// Executes ALL javascript code after HTML page has fully loaded
 document.addEventListener("DOMContentLoaded", function() {
+    // Creation of variables to be changed later
     const gradeInputs = document.querySelectorAll("#analysis .input-box input[type='text']");
     const resultBtn = document.getElementById("result-btn");
     const resetBtn = document.getElementById("reset-btn");
     const resultsContainer = document.querySelector("#analysis .inputs .results");
 
+    // Function of resultBtn after a click
     resultBtn.addEventListener("click", function() {
+
+        // Variables from user input
         let currentGrade = parseFloat(gradeInputs[0].value);
         let whatIfGrade = parseFloat(gradeInputs[1].value);
 
@@ -19,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let currentGPA = 0.0;
         let whatIfGPA = 0.0;
         
+
         if (currentGrade >= 90) {
             currentGPA = 4.0;
         } else if (currentGrade >= 80) {
@@ -58,17 +64,18 @@ document.addEventListener("DOMContentLoaded", function() {
             resultsContainer.textContent = "No change in GPA.";
         }
 
-        // Fade in the results
+        // Outputs results
         resultsContainer.classList.add("show");
     });
 
     resetBtn.addEventListener("click", function() {
+        // Reset input and output values
         gradeInputs.forEach(input => {
             input.value = "";
         });
         resultsContainer.textContent = "";
 
-        // Fade out the results
+        // Hides results
         resultsContainer.classList.remove("show");
     });
 });
