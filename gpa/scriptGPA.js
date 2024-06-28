@@ -6,6 +6,7 @@ createDatabase();
 const urlParams = new URLSearchParams(window.location.search);
 const studentID = urlParams.get("studentID");
 
+// Repeated initation to open the SchoolDatabase
 const dbPromise = new Promise((resolve, reject) => {
     const request = indexedDB.open("SchoolDatabase", 1);
 
@@ -20,9 +21,12 @@ const dbPromise = new Promise((resolve, reject) => {
     };
 });
 
+// Executes ALL javascript code after HTML page has fully loaded
 document.addEventListener("DOMContentLoaded", function () {
     let sections = document.querySelectorAll('section');
     let navLinks = document.querySelectorAll('header nav a');
+
+    // Function to initiate smooth scroll on navigation bar
     window.onscroll = () => {
         sections.forEach(sec => {
             let top = window.scrollY;
@@ -65,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Function to calculate GPA
-    function calculateGPA() {
+    function calculateGPA() { // Function called on line 201
         const enrollmentYear = parseInt(localStorage.getItem("enrollment")) || 0;
         const savedClassTypes = JSON.parse(localStorage.getItem("classTypes")) || [];
         const savedGrades = JSON.parse(localStorage.getItem("grades")) || [];
@@ -75,7 +79,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (savedClassTypes.length !== savedGrades.length) {
             return { uw: "N/A", w: "N/A" }; // Exit early if data is inconsistent
         }
-    
+        
+        // Hashmap/Dictionary creation to convert letter to point 
         const gradeToPoints = {
             A: 4.0,
             B: 3.0,
@@ -83,27 +88,32 @@ document.addEventListener("DOMContentLoaded", function () {
             D: 1.0,
             F: 0.0
         };
-    
+
         const getWeightedPoints = (grade, type) => {
-            const points = gradeToPoints[grade];
             if (enrollmentYear <= 2022) {
-                if (type === "AP" || type === "AICE" || type === "Dual Enrollment") return points + 0.08;
-                if (type === "Honors") return points + 0.04;
+                if (grade === "A" || grade === "B" || grade === "C") {
+                    if (type === "AP" || type === "AICE" || type === "Dual Enrollment") weightedCredits += 0.08;
+                    if (type === "Honors") weightedCredits += 0.04;
+                }
             } else {
-                if (type === "AP" || type === "AICE" || type === "Dual Enrollment") return points + 1.0;
-                if (type === "Honors") return points + 0.5;
+                if (grade === "A" || grade === "B" || grade === "C") {
+                    if (type === "AP" || type === "AICE" || type === "Dual Enrollment") weightedCredits += 1.0;
+                    if (type === "Honors") weightedCredits += 0.5;
+                }
             }
-            return points;
         };
-    
+        
+        // Iterate through stored class types to execute letter to grade point conversion
         for (let i = 0; i < savedClassTypes.length; i++) {
             let gradeLetter = gradeToLetter(parseFloat(savedGrades[i]));
             unweightedCredits += gradeToPoints[gradeLetter];
-            weightedCredits += getWeightedPoints(gradeLetter, savedClassTypes[i]);
+            // Updates weightedCredits variable
+            getWeightedPoints(gradeLetter, savedClassTypes[i]);
         }
-    
+        
+        // Final conversion of weighted and unweighted GPA values
         const unweightedGPA = (unweightedCredits / savedClassTypes.length).toFixed(2);
-        const weightedGPA = (weightedCredits / savedClassTypes.length).toFixed(2);
+        const weightedGPA = ((unweightedCredits / savedClassTypes.length) + weightedCredits).toFixed(2);
     
         return { uw: unweightedGPA, w: weightedGPA };
     }
@@ -145,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const gpaDiv = document.querySelector(".gpa-box");
     const results = document.querySelector(".con");
 
+    // Execution of script 
     addButton.addEventListener("click", function () {
         const classTypeSelect = document.querySelector(".class-type");
         const gradeSelect = document.querySelector(".grade");
@@ -184,25 +195,34 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Execute code on "Calculate GPA"
     calculateButton.addEventListener("click", function () {
+        // Store values in variables and call calculateGPA function to return values
         const gpa = calculateGPA();
         const unweightedGPA = gpa.uw;
         const weightedGPA = gpa.w;
 
+        // Process to store GPA into database for user
         dbPromise.then((db) => {
             const transaction = db.transaction("students", "readwrite");
             const store = transaction.objectStore("students");
     
             const idIndex = store.index("student_id");
             const idQuery = idIndex.get([studentID]);  
-    
+            
+            // Onsuccess function which properly stores values
             idQuery.onsuccess = function () {
                 const studentData = idQuery.result;
+                
+                // Checks if studentData is valid
                 if (studentData) {
+
+                    // Mutates student database to input gpa values to keep save
                     studentData.weighted = weightedGPA.toLocaleString();
                     studentData.unweighted = unweightedGPA.toLocaleString();
                     const request = store.put(studentData);
-
+                    
+                    // Prints success to show it works (Only console)
                     request.onsuccess = function () {
                         console.log("updated")
                     };
@@ -223,6 +243,8 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Failed to open database:", error);
         });
 
+
+        // Shows summary and outputs results, and makes element actually appear
         unweightedDiv.textContent = `Unweighted GPA: ${unweightedGPA}`;
         unweightedDiv.style.opacity = "1";
     
