@@ -6,6 +6,7 @@ createDatabase();
 const urlParams = new URLSearchParams(window.location.search);
 const studentID = urlParams.get("studentID");
 
+// Repeated initation to open the SchoolDatabase
 const dbPromise = new Promise((resolve, reject) => {
     const request = indexedDB.open("SchoolDatabase", 1);
 
@@ -71,10 +72,11 @@ function handleFormSubmit(event) {
 
     // Check if the maximum limit of goals has been reached
     if (document.querySelectorAll('.goal-item').length >= 12) {
-        alert("You've reached the maximum limit of goals (12). Please complete or remove existing goals before adding more.");
+        showToast('<i class="fa-solid fa-circle-exclamation"></i>  Reached maximum limit of goals (12). Please remove existing goals before adding more.');
         return;
     }
     
+    // Check if goal submission is not empty in order to output goal made
     if (goalText !== '') {
         addGoal(goalText);
         goalInput.value = ''; // Clear input field after adding goal
@@ -112,8 +114,7 @@ function saveGoals(studentID) {
                     alert("Failed to update goals.");
                 };
             } else {
-                console.error("Student not found.");
-                alert("Student not found.");
+                showToast('<i class="fa-solid fa-circle-exclamation"></i> Student not found.');
             }
         };
 
