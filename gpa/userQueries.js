@@ -3,6 +3,7 @@ import createDatabase from "../createDatabase.js";
 import { loadGoals } from "./scriptGoal.js";
 createDatabase();
 
+// Repeated initation to open the SchoolDatabase
 const dbPromise = new Promise((resolve, reject) => {
     const request = indexedDB.open("SchoolDatabase", 1);
 
@@ -25,9 +26,8 @@ function getQueryParam(name) {
 // Retrieve the student ID from the URL
 const studentID = getQueryParam("studentID");
 
+// Checks if studentID is valid (exists)
 if (studentID) {
-    // Use the student ID to fetch user data from local storage
-
     dbPromise.then((db) => {
         const transaction = db.transaction("students", "readonly");
         const store = transaction.objectStore("students");
@@ -35,15 +35,17 @@ if (studentID) {
         const idIndex = store.index("student_id");
         const idQuery = idIndex.get([studentID]);   
 
+        // Onsuccess function executes code
         idQuery.onsuccess = function () {
+            // Validating if idQuery is a real result, loads goals if a result
             if (idQuery.result) {
-                //console.log("User Query working: ", idQuery.result);
                 loadGoals(studentID);
             } else {
                 alert("User Query Failed");
             }
         };
-
+        
+        // Onerror function for precautions
         idQuery.onerror = function (event) {
             console.error("Request error: ", event.target.error);
         };
