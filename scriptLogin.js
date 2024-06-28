@@ -1,5 +1,9 @@
+// Import necessary scripts
 import createDatabase from "./createDatabase.js";
+import showToast from "./extraFeatures.js";
 
+
+// Import createDatabase into each file to open database in order to access and mutate references
 createDatabase();
 
 const dbPromise = new Promise((resolve, reject) => {
@@ -12,20 +16,22 @@ const dbPromise = new Promise((resolve, reject) => {
 
     request.onsuccess = function (event) {
         resolve(request.result);
-        console.log("Opened from Login script")
     };
 });
 
+// Creation of elements in HTML
 let loginForm = document.getElementById("loginForm");
 let signupForm = document.getElementById("signupForm");
 let title = document.getElementById("title");
 
+// Function to change from Sign In form to Sign Up form
 function showSignUpForm() {
     document.getElementById("loginForm").style.display = "none";
     document.getElementById("signupForm").style.display = "block";
     title.innerHTML = "Sign Up";
 }
 
+// Function to change from Sign Up form to Sign In form
 function showSignInForm() {
     document.getElementById("signupForm").style.display = "none";
     document.getElementById("loginForm").style.display = "block";
@@ -36,6 +42,7 @@ function showSignInForm() {
 document.getElementById("signupLink").querySelector("a").addEventListener("click", showSignUpForm);
 document.getElementById("loginLink").querySelector("a").addEventListener("click", showSignInForm);
 
+// Event listener to execute all code below singUpForm eventListener after submitting information
 signupForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
@@ -43,36 +50,57 @@ signupForm.addEventListener("submit", function(event) {
     let firstName = document.getElementById("firstNameInput").value;
     let lastName = document.getElementById("lastNameInput").value;
     let newStudentID = document.getElementById("newstudentIDInput").value;
-
     let fullName = firstName.toUpperCase() + " " + lastName.toUpperCase();
 
+    // Initiation of executing code for the database
     dbPromise.then((db) => {
+        // Grabs reference of database structure
         const transaction = db.transaction("students", "readwrite");
         const store = transaction.objectStore("students");
 
-        const studentData = {
-            name: fullName,
-            student_number: newStudentID,
-            weighted: "0.0",
-            unweighted: "0.0",
+        const idIndex = store.index("student_id");
+        const idQuery = idIndex.get([newStudentID]);  
+        
+        // Onsuccess function executes code
+        idQuery.onsuccess = function () {
+            // Validating if idQuery is a real result, gives notification to tell user account already exists
+            if (idQuery.result) {
+                showToast('<i class="fa-solid fa-circle-exclamation"></i> Account already exists. Try and login.');
+            } else {
+                // If idQuery not located in database (does not exist), allow for creation of account
+                const studentData = {
+                    name: fullName,
+                    student_number: newStudentID,
+                    weighted: "0.0",
+                    unweighted: "0.0",
+                };
+                
+                // Creates dictionary/hashmap of current known student data and adds into database
+                const request = store.add(studentData);
+
+                // Onsuccess function to redirect user to main page
+                request.onsuccess = function () {
+                    window.location.href = "gpa/gpacalculator.html?studentID=" + encodeURIComponent(newStudentID);
+                };
+
+                request.onerror = function (event) {
+                    console.error("Transaction error: ", event.target.error);
+                    alert("Failed to add student.");
+                };
+            }
         };
 
-        const request = store.add(studentData);
-
-        request.onsuccess = function () {
-            console.log("New student added");
-            window.location.href = "gpa/gpacalculator.html?studentID=" + encodeURIComponent(newStudentID);
+        idQuery.onerror = function (event) {
+            console.error("Request error: ", event.target.error);
+            alert("Failed to check student ID. Please try again.");
         };
 
-        request.onerror = function (event) {
-            console.error("Transaction error: ", event.target.error);
-            alert("Failed to add student. Maybe the student ID already exists.");
-        };
     }).catch((error) => {
         console.error("Failed to open database:", error);
     });
 });
 
+// Event listener to execute all code below loginForm eventListener to log into user account
 loginForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
@@ -87,11 +115,9 @@ loginForm.addEventListener("submit", function(event) {
 
         idQuery.onsuccess = function () {
             if (idQuery.result) {
-                console.log("Student found: ", idQuery);
                 window.location.href = "gpa/gpacalculator.html?studentID=" + encodeURIComponent(studentID);
             } else {
-                alert("You don't have an account yet. Please sign up first.");
-                //console.log("Student not found: ", idQuery.result, studentID);
+                showToast('<i class="fa-solid fa-circle-exclamation"></i> Account does not exist. Please create an account.');
             }
         };
 
